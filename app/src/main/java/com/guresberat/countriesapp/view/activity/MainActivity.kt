@@ -5,10 +5,12 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.guresberat.countriesapp.databinding.ActivityMainBinding
 import com.guresberat.countriesapp.utils.Resource
 import com.guresberat.countriesapp.utils.hide
 import com.guresberat.countriesapp.utils.show
+import com.guresberat.countriesapp.view.adapter.HomeAdapter
 import com.guresberat.countriesapp.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -16,6 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
+    private val homeAdapter = HomeAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,17 +29,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initialize() {
-        /*binding.recyclerView.apply {
-            setHasFixedSize(true)
-            adapter = homeRecyclerViewAdapter
-            homeRecyclerViewAdapter.itemClickListener = { item, position ->
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = homeAdapter
+            /*homeRecyclerViewAdapter.itemClickListener = { item, position ->
                 val newIntent = Intent(this@MainActivity, ProductDetail::class.java).apply {
                     putExtra("item", item)
                     putExtra("position", position)
                 }
                 startActivity(newIntent)
-            }
-        }*/
+            }*/
+        }
     }
 
     private fun subscribeObservers() {
@@ -50,8 +53,7 @@ class MainActivity : AppCompatActivity() {
                     is Resource.Loading -> binding.progressBar.show()
                     is Resource.Success -> {
                         binding.progressBar.hide()
-                        //homeRecyclerViewAdapter.items =
-                        //  it.value.widgets
+                        homeAdapter.items = it.value
                     }
                 }
             }

@@ -23,8 +23,8 @@ class MainViewModel @Inject constructor(private val mainRepository: MainReposito
     }
 
     private fun getDashboard() = viewModelScope.launch {
-        _countriesSharedFlow.tryEmit(Resource.Loading)
+        _countriesSharedFlow.emit(Resource.Loading)
         val countryList = mainRepository.getCountries()
-        _countriesSharedFlow.tryEmit(Resource.Success(countryList))
+        _countriesSharedFlow.emit(Resource.Success(countryList))
     }
 }
