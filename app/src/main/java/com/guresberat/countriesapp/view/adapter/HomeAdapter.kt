@@ -10,6 +10,8 @@ import com.guresberat.countriesapp.databinding.CardViewDesignBinding
 
 class HomeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    var itemClickListener: ((item: Country) -> Unit)? = null
+
     var items = listOf<Country>()
         @SuppressLint("NotifyDataSetChanged")
         set(value) {
@@ -17,11 +19,15 @@ class HomeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             notifyDataSetChanged()
         }
 
-    class ViewHolder(private val itemBinding: CardViewDesignBinding) :
+    inner class ViewHolder(private val itemBinding: CardViewDesignBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
+
         fun bind(country: Country) {
             Glide.with(itemBinding.root.context).load(country.url).into(itemBinding.imageview)
             itemBinding.textView.text = country.name
+            itemBinding.root.setOnClickListener {
+                itemClickListener?.invoke(country)
+            }
         }
     }
 

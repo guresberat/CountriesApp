@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/bg_gradient" />
+
+    <item android:drawable="@drawable/bg_white" />
+    <item>
+        <bitmap
+            android:gravity="top"
+            android:src="@drawable/splash_item" />
+    </item>
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/earth" />
+            android:src="@drawable/splash_world" />
     </item>
 </layer-list>

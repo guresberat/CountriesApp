@@ -1,5 +1,6 @@
 package com.guresberat.countriesapp.view.activity
 
+import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.guresberat.countriesapp.data.model.Country
 import com.guresberat.countriesapp.databinding.ActivityMainBinding
 import com.guresberat.countriesapp.utils.Resource
 import com.guresberat.countriesapp.utils.hide
@@ -15,6 +17,7 @@ import com.guresberat.countriesapp.view.adapter.HomeAdapter
 import com.guresberat.countriesapp.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.internal.Contexts
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -34,13 +37,9 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = homeAdapter
-            /*homeRecyclerViewAdapter.itemClickListener = { item, position ->
-                val newIntent = Intent(this@MainActivity, ProductDetail::class.java).apply {
-                    putExtra("item", item)
-                    putExtra("position", position)
-                }
-                startActivity(newIntent)
-            }*/
+            homeAdapter.itemClickListener = { item ->
+                showDialog(item)
+            }
         }
 
         val sharedPreference = Contexts.getApplication(applicationContext).getSharedPreferences(
@@ -49,6 +48,12 @@ class MainActivity : AppCompatActivity() {
         )
 
         viewModel.fetchData(sharedPreference)
+    }
+
+    private fun showDialog(item : Country){
+        val customDialog = Dialog(this)
+        customDialog.show()
+        TODO("Implement Country Detail dialog")
     }
 
     private fun subscribeObservers() {
