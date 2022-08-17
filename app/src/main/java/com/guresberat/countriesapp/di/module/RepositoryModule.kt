@@ -1,7 +1,10 @@
 package com.guresberat.countriesapp.di.module
 
-import com.guresberat.countriesapp.data.repository.MainRepository
-import com.guresberat.countriesapp.data.repository.MainRepositoryImpl
+import com.guresberat.countriesapp.data.dao.CountryDao
+import com.guresberat.countriesapp.data.repository.LocalRepository
+import com.guresberat.countriesapp.data.repository.LocalRepositoryImpl
+import com.guresberat.countriesapp.data.repository.RemoteRepository
+import com.guresberat.countriesapp.data.repository.RemoteRepositoryImpl
 import com.guresberat.countriesapp.network.RemoteDataSource
 import dagger.Module
 import dagger.Provides
@@ -15,7 +18,13 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideMainRepository(
+    fun provideRemoteRepository(
         apiDataStore: RemoteDataSource
-    ): MainRepository = MainRepositoryImpl(apiDataStore)
+    ): RemoteRepository = RemoteRepositoryImpl(apiDataStore)
+
+    @Singleton
+    @Provides
+    fun provideLocalRepository(
+        localRepository: CountryDao
+    ): LocalRepository = LocalRepositoryImpl(localRepository)
 }

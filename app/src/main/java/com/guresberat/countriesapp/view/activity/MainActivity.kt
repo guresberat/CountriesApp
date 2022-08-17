@@ -1,5 +1,6 @@
 package com.guresberat.countriesapp.view.activity
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
@@ -13,6 +14,7 @@ import com.guresberat.countriesapp.utils.show
 import com.guresberat.countriesapp.view.adapter.HomeAdapter
 import com.guresberat.countriesapp.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.internal.Contexts
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -40,6 +42,13 @@ class MainActivity : AppCompatActivity() {
                 startActivity(newIntent)
             }*/
         }
+
+        val sharedPreference = Contexts.getApplication(applicationContext).getSharedPreferences(
+            "time",
+            Context.MODE_PRIVATE
+        )
+
+        viewModel.fetchData(sharedPreference)
     }
 
     private fun subscribeObservers() {
