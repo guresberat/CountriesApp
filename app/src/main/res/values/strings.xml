@@ -3,4 +3,5 @@
     <string name="country_flag">Country Flag</string>
     <string name="countryList">Country List</string>
     <string name="line_shadow">Line Shadow</string>
+    <string name="close_button">close_button</string>
 </resources>
