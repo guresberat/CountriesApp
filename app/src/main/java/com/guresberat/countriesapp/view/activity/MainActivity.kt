@@ -2,12 +2,20 @@ package com.guresberat.countriesapp.view.activity
 
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageButton
+import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.guresberat.countriesapp.R
 import com.guresberat.countriesapp.data.model.Country
 import com.guresberat.countriesapp.databinding.ActivityMainBinding
 import com.guresberat.countriesapp.utils.Resource
@@ -50,10 +58,18 @@ class MainActivity : AppCompatActivity() {
         viewModel.fetchData(sharedPreference)
     }
 
-    private fun showDialog(item : Country){
+    private fun showDialog(item: Country) {
         val customDialog = Dialog(this)
+        customDialog.setContentView(R.layout.dialog_layout)
+        customDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        Glide.with(this).load(item.url).into(customDialog.findViewById(R.id.flagImageView))
+        customDialog.findViewById<ImageButton>(R.id.closeButton).setOnClickListener {
+            customDialog.dismiss()
+        }
+        customDialog.findViewById<TextView>(R.id.countryName).text = item.name
+        customDialog.findViewById<TextView>(R.id.countryDesc).text = item.desc
+
         customDialog.show()
-        TODO("Implement Country Detail dialog")
     }
 
     private fun subscribeObservers() {

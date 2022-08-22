@@ -26,32 +26,6 @@ class HomeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(country: Country) {
-            /*
-            Glide.with(itemBinding.root.context)
-                .load(country.url)
-                .into(object : CustomTarget<Drawable>(50, 50) {
-                    override fun onLoadCleared(drawable: Drawable?) {
-                        itemBinding.textView.setCompoundDrawablesWithIntrinsicBounds(
-                            drawable,
-                            null,
-                            null,
-                            null
-                        )
-                    }
-
-                    override fun onResourceReady(
-                        res: Drawable,
-                        transition: com.bumptech.glide.request.transition.Transition<in Drawable>?
-                    ) {
-                        itemBinding.textView.setCompoundDrawablesWithIntrinsicBounds(
-                            res,
-                            null,
-                            null,
-                            null
-                        )
-                    }
-
-                })*/
             Glide.with(itemBinding.root.context).load(country.url).into(itemBinding.imageview)
             itemBinding.textView.text = country.name
             itemBinding.root.setOnClickListener {
