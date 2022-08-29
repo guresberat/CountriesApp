@@ -5,8 +5,9 @@ import android.os.SystemClock
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.guresberat.countriesapp.data.model.Country
-import com.guresberat.countriesapp.data.repository.LocalRepository
-import com.guresberat.countriesapp.data.repository.RemoteRepository
+import com.guresberat.countriesapp.data.usecase.GetCountriesFromLocalUseCase
+import com.guresberat.countriesapp.data.usecase.GetCountriesFromRemoteUseCase
+import com.guresberat.countriesapp.data.usecase.InsertCountriesUseCase
 import com.guresberat.countriesapp.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -16,8 +17,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val remoteRepository: RemoteRepository,
-    private val localRepository: LocalRepository
+    private val getCountriesFromLocalUseCase: GetCountriesFromLocalUseCase,
+    private val getCountriesFromRemoteUseCase: GetCountriesFromRemoteUseCase,
+    private val insertCountriesUseCase: InsertCountriesUseCase
 ) : ViewModel() {
 
     val countriesSharedFlow: SharedFlow<Resource<List<Country>>>
@@ -30,14 +32,14 @@ class MainViewModel @Inject constructor(
 
     private fun getFromLocal() = viewModelScope.launch {
         _countriesSharedFlow.emit(Resource.Loading)
-        val countryList = remoteRepository.getCountries()
+        val countryList = getCountriesFromLocalUseCase()
         _countriesSharedFlow.emit(Resource.Success(countryList))
     }
 
     private fun getFromApi() = viewModelScope.launch {
-        val countryList = remoteRepository.getCountries()
+        val countryList = getCountriesFromRemoteUseCase()
         countryList.forEach {
-            localRepository.insert(it)
+            insertCountriesUseCase(it)
         }
         getFromLocal()
     }
